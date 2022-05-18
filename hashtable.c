@@ -1,26 +1,28 @@
-#include <stdio.h> 
-#include <stdlib.h> 
 #include <string.h> 
+#include <stdlib.h>
 
-#define hash_size(n) ((unsigned long)1 << n)
-#define hash_mask(n) (hash_size(n) - 1)
+#define hashsize(n) ((unsigned long)1 << n)
+#define hashmask(n) (hashsize(n) - 1)
 
+unsigned long hash(char *key, unsigned long size, short bits){
+    unsigned long hash = 0; 
+    
+    for(unsigned long i = 0; i < size; i++){
+        hash += key[i]; 
+        hash += hash << 10; 
+        hash ^= hash >> 6; 
+    }
 
-typedef enum type {
-    d, 
-    ld, 
-    lld, 
-    u, 
-    lu, 
-    llu,
-    f, 
-    lf, 
-    s
-} type; 
+    hash += hash << 3; 
+    hash ^= hash >> 11; 
+    hash += hash << 15; 
 
+    return hash & hashmask(bits); 
+}
 
-
-typedef struct map_node_d {
+typedef struct hash_node {
     char *key; 
-    int value; 
-} map_node; 
+    void *value; 
+} hash_node; 
+
+
