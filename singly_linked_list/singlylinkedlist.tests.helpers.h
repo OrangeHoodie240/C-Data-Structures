@@ -10,7 +10,7 @@ typedef struct car {
 } car;
 
 
-void add_for_car(singly_linked_list_node *node, void *value){
+void add_for_car(sll_node *node, void *value){
     car *c = malloc(sizeof(car)); 
     *c = *(car*)value; 
     
@@ -21,7 +21,7 @@ void add_for_car(singly_linked_list_node *node, void *value){
     node->value = c;   
 }
 
-void delete_for_car(singly_linked_list_node *node){
+void delete_for_car(sll_node *node){
     free(((car *)(node->value))->color);
     free(node->value);
 }

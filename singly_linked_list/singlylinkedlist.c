@@ -4,8 +4,8 @@
 #include "singlylinkedlist.h"
 
 
-singly_linked_list *create_singly_linked_list(void (*f)(singly_linked_list_node *node, void *value), void (*g)(singly_linked_list_node * node)){
-    singly_linked_list *list = malloc(sizeof(singly_linked_list));
+sll *create_sll(void (*f)(sll_node *node, void *value), void (*g)(sll_node * node)){
+    sll *list = malloc(sizeof(sll));
     if(list == NULL){
         printf("\nError\n");
         exit(1);
@@ -18,9 +18,9 @@ singly_linked_list *create_singly_linked_list(void (*f)(singly_linked_list_node 
     return list; 
 }
 
-unsigned long singly_linked_list_push(singly_linked_list *list, void *item){
-    singly_linked_list_node *next; 
-    next = malloc(sizeof(singly_linked_list_node)); 
+unsigned long sll_push(sll *list, void *item){
+    sll_node *next; 
+    next = malloc(sizeof(sll_node)); 
 
     list->add_function(next, item); 
 
@@ -38,7 +38,7 @@ unsigned long singly_linked_list_push(singly_linked_list *list, void *item){
     return list->length; 
 }
 
-void * singly_linked_list_pop(singly_linked_list *list, char return_item){
+void * sll_pop(sll *list, char return_item){
     void * result = NULL; 
     if(list->length == 0){
         return result; 
@@ -63,7 +63,7 @@ void * singly_linked_list_pop(singly_linked_list *list, char return_item){
         list->tail = NULL;
     }
     else{
-        singly_linked_list_node *cur = list->head; 
+        sll_node *cur = list->head; 
         while(cur->next != list->tail){
             cur = cur->next; 
         }
@@ -92,12 +92,12 @@ void * singly_linked_list_pop(singly_linked_list *list, char return_item){
 
 
 
-void *singly_linked_list_get(singly_linked_list *list, unsigned long index){
+void *sll_get(sll *list, unsigned long index){
     if(list->length - 1 < index){
         return NULL; 
     }
 
-    singly_linked_list_node *cur_node = list->head; 
+    sll_node *cur_node = list->head; 
     unsigned long cur_ind = 0;  
     while(cur_ind < index){
         cur_node = cur_node->next; 
@@ -108,15 +108,15 @@ void *singly_linked_list_get(singly_linked_list *list, unsigned long index){
 }
 
 
-void destroy_singly_linked_list(singly_linked_list *list){
+void destroy_sll(sll *list){
     if(list->length == 0){
         free(list); 
         return;
     }
 
-    singly_linked_list_node *collection[list->length]; 
+    sll_node *collection[list->length]; 
 
-    singly_linked_list_node *cur = list->head; 
+    sll_node *cur = list->head; 
     collection[0] = cur;
     for(unsigned long i = 1; i < list->length; i++){
         collection[i] = cur->next; 
@@ -149,83 +149,102 @@ void destroy_singly_linked_list(singly_linked_list *list){
     free(list); 
 }
 
-/*
-typedef struct car {
-    char *color; 
-    float weight; 
-} car;
-
-
-// takes node pointer and value void pointer for the node value. 
-// What we need to do is set the node value to the value of the void pointer
-// to do this we need to cast to the correct type for the void pointer 
-// if the type is a struct with members on the heap we need to 
-//      1. create location on the heap and copy the values from those members. 
-//      2. Set the pointer members to the address of these new locations
-void add_for_car(singly_linked_list_node *node, void *value){
-    car *c = malloc(sizeof(car)); 
-    *c = *(car*)value; 
+unsigned long sll_unshift(sll *list, void *item){
+    sll_node *new_node = malloc(sizeof(sll_node));
+    list->add_function(new_node, item); 
     
-    char *color = malloc(strlen(c->color) + 1); 
-    strcpy(color, c->color);
-    c->color = color; 
+    sll_node *prev_head = list->head; 
+    list->head = new_node; 
+    new_node->next = prev_head; 
 
-    node->value = c;   
+    list->length += 1; 
+    return list->length;
 }
 
 
-// we pass when our value type has members on the heap that need to be freed. 
-// When our type does not have members on the heap we pass NULL
-// Inside we: 
-//      1. we pass node->value->member_name to free() for each member that is on the heap
-//      2. pass node-value to free() at the end of the function.
-void delete_for_car(singly_linked_list_node *node){
-    free(((car *)(node->value))->color);
-    free(node->value);
+void sll_insert(sll *list, unsigned long index, void *item){
+    if(index > list->length){
+        return; 
+    }
+    else if(index == list->length){
+        sll_push(list, item);
+        return;
+    }
+    else if(index == 0){
+        sll_unshift(list, item); 
+        return;
+    }
+
+    sll_node *new_node = malloc(sizeof(sll_node)); 
+    list->add_function(new_node, item);
+
+    sll_node *node_before = list->head; 
+    for(int i = 1; i < index; i++){
+        node_before = node_before->next;
+    }
+
+    new_node->next = node_before->next; 
+    node_before->next = new_node;
+
+    list->length += 1; 
 }
 
-int main(){
+void sll_shift(sll *list){
+    if(list->length == 0) {
+        return; 
+    }
+    
+    if(list->delete_function != NULL){
+        list->delete_function(list->head); 
+    }
+    else{
+        free(list->head->value); 
+    }
 
-    singly_linked_list *list = create_singly_linked_list(add_for_car, delete_for_car); 
-    car c1; 
-    c1.weight = 31.2; 
-    c1.color = malloc(sizeof(char) * 4); 
-    strcpy(c1.color, "red"); 
+    if(list->length == 1){
+        free(list->head);
+        list->head = NULL; 
+        list->tail = NULL;
+    }
+    else{
+        sll_node *original_head = list->head; 
+        list->head = list->head->next;         
 
-    singly_linked_list_push(list, &c1); 
-    car c2; 
-    c2.weight = 50.2; 
-    c2.color = malloc(sizeof(char) * 5); 
-    strcpy(c2.color, "blue"); 
+        free(original_head);
+    }
 
-    singly_linked_list_push(list, &c2); 
-
-    car c3; 
-    c3.weight = 89; 
-    c3.color = malloc(sizeof(char) * 6); 
-    strcpy(c3.color, "green"); 
-
-    singly_linked_list_push(list, &c3);
-
-
-    car res1 = *(car*)singly_linked_list_get(list, 0); 
-
-    car res2 = *(car*)singly_linked_list_get(list, 1);
-
-    car res3 = *(car*)singly_linked_list_get(list, 2); 
-
-    printf("color 1: %s\ncolor 2: %s\ncolor 3: %s\n", res1.color, res2.color, res3.color);
-
-    printf("length: %lu\n", list->length);
-    singly_linked_list_pop(list);
-    printf("length: %lu\n", list->length);
-    singly_linked_list_pop(list);
-    printf("length: %lu\n", list->length);
-    singly_linked_list_pop(list);
-    printf("length: %lu\n", list->length);
-
-    destroy_singly_linked_list(list);  
-
-    return 0; 
+    list->length -= 1; 
 }
-*/
+
+
+void sll_delete(sll *list, unsigned long index){
+    if(index == list->length - 1){
+        sll_pop(list, 0);
+    }
+    else if(index >= list->length){
+        return; 
+    }
+    else if(index == 0){
+        sll_shift(list); 
+    }
+
+    sll_node *node_before = list->head; 
+    unsigned long i = 0; 
+    while(i != index - 1){
+        node_before = node_before->next; 
+        i++;
+    }
+    
+    sll_node *target_node = node_before->next; 
+    node_before->next = target_node->next; 
+        
+    if(list->delete_function != NULL){
+        list->delete_function(target_node); 
+    }
+    else{
+        free(target_node->value); 
+    }    
+    free(target_node);
+    
+    list->length -=1; 
+}

@@ -1,0 +1,8 @@
+sll 
+ 	- delete 
+	- search 
+		- both with a custom callback and not 
+	- to_array
+	- for_each 
+		-  takes function and uses the next property to iterate over each node and call the function on its value. 
+		-  that way not starting at 0 each time.
