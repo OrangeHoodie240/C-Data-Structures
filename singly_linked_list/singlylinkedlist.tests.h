@@ -8,5 +8,8 @@ char sll_unshift_prepends_node();
 char sll_inserts_correctly(); 
 char sll_shift_deletes_first_node();
 char sll_delete_deletes_from_middle();
+char sll_for_each_test();
+char sll_test_reduce();
+char sll_test_sll_map();
 
 #endif

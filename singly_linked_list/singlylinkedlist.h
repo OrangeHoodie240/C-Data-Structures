@@ -84,4 +84,22 @@ void sll_insert(sll *list, unsigned long index, void *item);
 void sll_shift(sll *list); 
 void sll_delete(sll *list, unsigned long index);
 
+
+// Allows a for each loop while iterating by means of the .next property on each nodes instead of 
+// starting from the head of the sll for each iteration. 
+
+// Takes list and then a function, void *f(void *value, unsigned long index) and finally  Then executes 
+// the function on each sll_node value property and passing its index.
+
+void sll_for_each(sll *list, void (*f)(void *value, unsigned long index));
+void *sll_reduce(sll *list, void * (*f)(void * current, void *accumulator, unsigned long index),  void *accumulator);
+sll *sll_map(sll *list, void *(*callback)(void *current, unsigned long index), void (*add_function)(sll_node *node, void *item), void (*delete_function)(sll_node *node));
+
+
+// add function for float types
+void sll_add_for_float(sll_node *node, void *item);
+
+
+
+
 #endif

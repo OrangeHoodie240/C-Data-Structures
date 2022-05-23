@@ -32,6 +32,10 @@ int main(){
     run_test(sll_inserts_correctly, "sll_inserts_correctly", &tracker); 
     run_test(sll_shift_deletes_first_node, "sll_shift_deletes_first_node", &tracker); 
     run_test(sll_delete_deletes_from_middle, "sll_delete_deletes_from_middle", &tracker); 
+    run_test(sll_for_each_test, "sll_for_each_test", &tracker);
+    run_test(sll_test_reduce, "sll_test_reduce", &tracker); 
+    run_test(sll_test_sll_map, "sll_test_sll_map", &tracker); 
+    
 
     printf("\nTests Passed: %d\nTests Failed: %d\nTotal Tests: %d", tracker.passed, tracker.failed, tracker.passed + tracker.failed);
     return 0; 

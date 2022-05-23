@@ -351,3 +351,149 @@ char sll_delete_deletes_from_middle(){
     destroy_sll(list);
     return result; 
 }
+
+void test_for_each_callback(void *value, unsigned long index){
+    ((car*)value)->weight = 100.000; 
+    strcpy(((car*)value)->color, "white"); 
+}
+
+char sll_for_each_test(){
+    sll *list = create_sll(add_for_car, delete_for_car); 
+ 
+    car c1, c2, c3, c4; 
+    c1.weight = 1.2; 
+    c2.weight = 2.3; 
+    c3.weight = 3.4;
+    c4.weight = 41.2;
+
+
+    c1.color = malloc(sizeof(char) * 4);
+    strcpy(c1.color, "red");
+    c2.color = malloc(sizeof(char) * 4);
+    strcpy(c2.color, "blue");
+    c3.color = malloc(sizeof(char) * 6);
+    strcpy(c3.color, "green");
+    c4.color = malloc(sizeof(char) * 5);
+    strcpy(c4.color, "gray");   
+
+    sll_push(list, &c1);
+    sll_push(list, &c2);
+    sll_push(list, &c3);
+    sll_push(list, &c4);
+
+
+    car cars[4] = {c1, c2, c3, c4};
+
+
+    // change nodes with sll_for_each
+    sll_for_each(list, test_for_each_callback);
+
+    for(int i = 0; i < 4; i++){
+        car * c = sll_get(list, i);
+        if(c->weight != 100.000 || strcmp(c->color, "white") != 0){
+            free_everything(list, cars, 4);
+            return 0; 
+        }
+    }
+
+
+    free_everything(list, cars, 4);
+    return 1;
+}
+
+
+
+
+void *sll_test_reduce_helper(void *current, void *accumulator, unsigned long index){
+    *(float *)accumulator += (*(car *)current).weight;
+    return accumulator;
+}
+
+char sll_test_reduce(){
+    sll *list = create_sll(add_for_car, delete_for_car); 
+ 
+    car c1, c2, c3, c4; 
+    c1.weight = 12; 
+    c2.weight = 23; 
+    c3.weight = 34;
+    c4.weight = 41;
+
+
+    c1.color = malloc(sizeof(char) * 4);
+    strcpy(c1.color, "red");
+    c2.color = malloc(sizeof(char) * 4);
+    strcpy(c2.color, "blue");
+    c3.color = malloc(sizeof(char) * 6);
+    strcpy(c3.color, "green");
+    c4.color = malloc(sizeof(char) * 5);
+    strcpy(c4.color, "gray");   
+    car cars[4] = {c1, c2, c3, c4};
+
+    sll_push(list, &c1);
+    sll_push(list, &c2);
+    sll_push(list, &c3);
+    sll_push(list, &c4);
+
+    float sum = 0; 
+    sum = *(float *)sll_reduce(list, sll_test_reduce_helper, &sum);
+    
+    char result = 1; 
+    if(sum != 110.000){
+        result = 0;
+    }
+
+    free_everything(list, cars, 4);
+    return result;
+}
+
+    
+
+void *sll_test_sll_map_helper_callback(void *current, unsigned long index){
+    void *weight = malloc(sizeof(float *));
+    *(float *)weight = (*(car *)current).weight;
+    return weight;
+}
+
+char sll_test_sll_map(){
+    sll *list = create_sll(add_for_car, delete_for_car); 
+ 
+    car c1, c2, c3, c4; 
+    c1.weight = 12; 
+    c2.weight = 23; 
+    c3.weight = 34;
+    c4.weight = 41;
+
+
+    c1.color = malloc(sizeof(char) * 4);
+    strcpy(c1.color, "red");
+    c2.color = malloc(sizeof(char) * 4);
+    strcpy(c2.color, "blue");
+    c3.color = malloc(sizeof(char) * 6);
+    strcpy(c3.color, "green");
+    c4.color = malloc(sizeof(char) * 5);
+    strcpy(c4.color, "gray");   
+    car cars[4] = {c1, c2, c3, c4};
+
+    sll_push(list, &c1);
+    sll_push(list, &c2);
+    sll_push(list, &c3);
+    sll_push(list, &c4);
+
+    sll *new_list = sll_map(list, sll_test_sll_map_helper_callback, sll_add_for_float, NULL); 
+
+    float sum = 0; 
+    for(int i = 0; i < 4; i++){
+        float *weight = sll_get(new_list, i); 
+        sum += *weight;
+    }
+
+    char result = 1;
+    if(sum != 110.000){
+        result = 0; 
+    }
+
+    free_everything(list, cars, 4);
+    destroy_sll(new_list);
+    return result;
+
+}

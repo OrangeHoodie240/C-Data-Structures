@@ -248,3 +248,62 @@ void sll_delete(sll *list, unsigned long index){
     
     list->length -=1; 
 }
+
+
+void sll_for_each(sll *list, void (*f)(void *value, unsigned long index)){
+    if(list->head == NULL){
+        return;
+    }
+
+    sll_node *cur = list->head; 
+    unsigned long index = 0; 
+    while(cur != NULL){
+        f(cur->value, index); 
+        cur = cur->next;
+        index++; 
+    }
+}
+
+
+
+void *sll_reduce(sll *list, void * (*f)(void *current, void *accumulator, unsigned long index),  void *accumulator){
+    if(list->length == 0){
+        return accumulator;
+    }
+
+    sll_node *cur = list->head; 
+    unsigned long index = 0; 
+    while(cur != NULL){
+        accumulator = f(cur->value, accumulator, index); 
+        cur = cur->next;
+        index++; 
+    }
+
+    return accumulator; 
+}
+
+
+sll *sll_map(sll *list, void *(*callback)(void *current, unsigned long index), void (*add_function)(sll_node *node, void *item), void (*delete_function)(sll_node *node)){
+    if(list->length == 0) {
+        return NULL;
+    }
+    
+    sll *new_list = create_sll(add_function, delete_function);
+
+    sll_node *cur = list->head; 
+    unsigned long index = 0;
+
+    while(cur != NULL){
+        sll_push(new_list, callback(cur->value, index));
+        cur = cur->next;
+        index++;
+    }
+
+    return new_list;
+}
+
+// add and delete functions for the primatives
+void sll_add_for_float(sll_node *node, void *item){
+    node->value = malloc(sizeof(float *));
+    *(float *)(node->value) = *(float *)item;
+}
