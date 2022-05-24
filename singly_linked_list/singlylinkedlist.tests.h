@@ -11,5 +11,6 @@ char sll_delete_deletes_from_middle();
 char sll_for_each_test();
 char sll_test_reduce();
 char sll_test_sll_map();
+char sll_test_find();
 
 #endif

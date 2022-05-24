@@ -434,7 +434,7 @@ char sll_test_reduce(){
     sll_push(list, &c3);
     sll_push(list, &c4);
 
-    float sum = 0; 
+    float sum = 0.0; 
     sum = *(float *)sll_reduce(list, sll_test_reduce_helper, &sum);
     
     char result = 1; 
@@ -496,4 +496,57 @@ char sll_test_sll_map(){
     destroy_sll(new_list);
     return result;
 
+}
+
+void *sll_test_find_helper(void *value){
+    car c = *(car *)value; 
+    if(c.weight != 34){
+        return NULL; 
+    }
+    if(strcmp(c.color, "green") != 0){
+        return NULL; 
+    }
+    return value; 
+}
+
+
+char sll_test_find(){
+    sll *list = create_sll(add_for_car, delete_for_car); 
+ 
+    car c1, c2, c3, c4; 
+    c1.weight = 12; 
+    c2.weight = 23; 
+    c3.weight = 34;
+    c4.weight = 41;
+
+
+    c1.color = malloc(sizeof(char) * 4);
+    strcpy(c1.color, "red");
+    c2.color = malloc(sizeof(char) * 4);
+    strcpy(c2.color, "blue");
+    c3.color = malloc(sizeof(char) * 6);
+    strcpy(c3.color, "green");
+    c4.color = malloc(sizeof(char) * 5);
+    strcpy(c4.color, "gray");   
+    car cars[4] = {c1, c2, c3, c4};
+
+    sll_push(list, &c1);
+    sll_push(list, &c2);
+    sll_push(list, &c3);
+    sll_push(list, &c4);
+
+    char result = 1; 
+    car *found = (car *)sll_find(list, sll_test_find_helper); 
+    if(found == NULL){
+        result = 0; 
+    }
+    else if(found->weight != cars[2].weight){
+        result = 0; 
+    }
+    else if(strcmp(found->color, cars[2].color) != 0){
+        result = 0; 
+    }
+
+    free_everything(list, cars, 4);
+    return result; 
 }

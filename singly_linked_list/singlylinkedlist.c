@@ -302,8 +302,34 @@ sll *sll_map(sll *list, void *(*callback)(void *current, unsigned long index), v
     return new_list;
 }
 
+
 // add and delete functions for the primatives
 void sll_add_for_float(sll_node *node, void *item){
     node->value = malloc(sizeof(float *));
     *(float *)(node->value) = *(float *)item;
 }
+
+
+// returns direct void pointer to item
+// does not return copy
+void *sll_find(sll *list, void *(callback)(void *value)){
+    if(list->length == 0){
+        return NULL; 
+    }
+    sll_node *cur = list->head; 
+    unsigned long index = 0;
+    
+    void *item = NULL;  
+    while(cur != NULL){
+        item = callback(cur->value); 
+        if(item != NULL){
+            break;
+        }
+
+        cur = cur->next;
+        index++;
+    }
+
+    return item; 
+}
+

@@ -1,4 +1,2 @@
 sll 
 	- search 
-		- both with a custom callback and not 
-	- to_array

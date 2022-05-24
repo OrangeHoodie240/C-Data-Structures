@@ -25,5 +25,4 @@ void delete_for_car(sll_node *node){
     free(((car *)(node->value))->color);
     free(node->value);
 }
-
 #endif

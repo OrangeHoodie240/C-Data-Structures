@@ -66,6 +66,7 @@ typedef struct sll {
 //}
 sll *create_sll(void (*f)(sll_node *node, void *value), void (*g)(sll_node * node));
 
+
 // Takes the sll and then the address to the value to append to the sll
 // This function will copy apply the add_function in order to create a copy of the value at a place on the heap that the node will
 // point to. 
@@ -92,14 +93,13 @@ void sll_delete(sll *list, unsigned long index);
 // the function on each sll_node value property and passing its index.
 
 void sll_for_each(sll *list, void (*f)(void *value, unsigned long index));
-void *sll_reduce(sll *list, void * (*f)(void * current, void *accumulator, unsigned long index),  void *accumulator);
-sll *sll_map(sll *list, void *(*callback)(void *current, unsigned long index), void (*add_function)(sll_node *node, void *item), void (*delete_function)(sll_node *node));
-
 
 // add function for float types
 void sll_add_for_float(sll_node *node, void *item);
 
-
+void *sll_reduce(sll *list, void * (*f)(void *current, void *accumulator, unsigned long index),  void *accumulator);
+sll *sll_map(sll *list, void *(*callback)(void *current, unsigned long index), void (*add_function)(sll_node *node, void *item), void (*delete_function)(sll_node *node));
+void *sll_find(sll *list, void *(callback)(void *value)); 
 
 
 #endif
