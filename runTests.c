@@ -3,6 +3,8 @@
 #include "sll_double/sll_double.tests.h"
 #include "sll_char/sll_char.tests.h"
 #include "sll_uchar/sll_uchar.tests.h"
+#include "sll_short/sll_short.tests.h"
+#include "sll_ushort/sll_ushort.tests.h"
 #include <stdio.h>
 
 
@@ -99,6 +101,34 @@ int main(){
     run_test(sll_uchar_test_sll_uchar_reduce, "sll_uchar_test_sll_uchar_reduce", &tracker); 
     run_test(sll_uchar_test_sll_uchar_find, "sll_uchar_test_sll_uchar_find", &tracker); 
 
+    // sll_short tests
+    printf("\nStarting sll_short tests\n");
+    run_test(sll_short_push_appends_node, "sll_short_push_appends_node", &tracker); 
+    run_test(sll_short_pop_returns_and_removes_node, "sll_short_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_short_test_sll_short_get, "sll_short_test_sll_short_get", &tracker); 
+    run_test(sll_short_test_sll_short_unshift, "sll_short_test_sll_short_unshift", &tracker); 
+    run_test(sll_short_test_sll_short_shift, "sll_short_test_sll_short_shift", &tracker); 
+    run_test(sll_short_test_sll_short_insert, "sll_short_test_sll_short_insert", &tracker); 
+    run_test(sll_short_test_sll_short_delete, "sll_short_test_sll_short_delete", &tracker); 
+    run_test(sll_short_test_sll_short_for_each, "sll_short_test_sll_short_for_each", &tracker); 
+    run_test(sll_short_test_sll_short_map, "sll_short_test_sll_short_map", &tracker); 
+    run_test(sll_short_test_sll_short_reduce, "sll_short_test_sll_short_reduce", &tracker); 
+    run_test(sll_short_test_sll_short_find, "sll_short_test_sll_short_find", &tracker); 
+
+
+    // sll_ushort tests
+    printf("\nStarting sll_ushort tests\n");
+    run_test(sll_ushort_push_appends_node, "sll_ushort_push_appends_node", &tracker); 
+    run_test(sll_ushort_pop_returns_and_removes_node, "sll_ushort_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_get, "sll_ushort_test_sll_ushort_get", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_unshift, "sll_ushort_test_sll_ushort_unshift", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_shift, "sll_ushort_test_sll_ushort_shift", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_insert, "sll_ushort_test_sll_ushort_insert", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_delete, "sll_ushort_test_sll_ushort_delete", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_for_each, "sll_ushort_test_sll_ushort_for_each", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_map, "sll_ushort_test_sll_ushort_map", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_reduce, "sll_ushort_test_sll_ushort_reduce", &tracker); 
+    run_test(sll_ushort_test_sll_ushort_find, "sll_ushort_test_sll_ushort_find", &tracker); 
 
     printf("\nTests Passed: %d\nTests Failed: %d\nTotal Tests: %d", tracker.passed, tracker.failed, tracker.passed + tracker.failed);
     return 0; 
