@@ -1,11 +1,11 @@
-#include "sll_float.h"
+#include "sll_double.h"
 #include <stdlib.h> 
 #include <stdio.h>
 #include <string.h> 
 
 
-sll_float *create_sll_float(){
-    sll_float *list = malloc(sizeof(sll_float));
+sll_double *create_sll_double(){
+    sll_double *list = malloc(sizeof(sll_double));
     if(list == NULL){
         printf("\nError\n");
         exit(1);
@@ -16,9 +16,9 @@ sll_float *create_sll_float(){
     return list; 
 }
 
-unsigned long sll_float_push(sll_float *list, float item){
-    sll_float_node *next; 
-    next = malloc(sizeof(sll_float_node)); 
+unsigned long sll_double_push(sll_double *list, double item){
+    sll_double_node *next; 
+    next = malloc(sizeof(sll_double_node)); 
     next->value = item;
 
     next->next = NULL; 
@@ -35,13 +35,13 @@ unsigned long sll_float_push(sll_float *list, float item){
     return list->length; 
 }
 
-float sll_float_pop(sll_float *list){
+double sll_double_pop(sll_double *list){
     if(list->length == 0){
-        printf("Error! used pop on an empty sll_float");
+        printf("Error! used pop on an empty sll_double");
         exit(1); 
     }
     
-    float result; 
+    double result; 
 
     if(list->head == list->tail){
         result = list->head->value; 
@@ -50,7 +50,7 @@ float sll_float_pop(sll_float *list){
         list->tail = NULL;
     }
     else{
-        sll_float_node *cur = list->head; 
+        sll_double_node *cur = list->head; 
         while(cur->next != list->tail){
             cur = cur->next; 
         }
@@ -69,13 +69,13 @@ float sll_float_pop(sll_float *list){
 
 
 
-float sll_float_get(sll_float *list, unsigned long index){
+double sll_double_get(sll_double *list, unsigned long index){
     if(list->length - 1 < index){
         printf("out of bounds error sll_get"); 
         exit(1); 
     }
 
-    sll_float_node *cur_node = list->head; 
+    sll_double_node *cur_node = list->head; 
     unsigned long cur_ind = 0;  
     while(cur_ind < index){
         cur_node = cur_node->next; 
@@ -86,16 +86,16 @@ float sll_float_get(sll_float *list, unsigned long index){
 }
 
 
-void destroy_sll_float(sll_float *list){
+void destroy_sll_double(sll_double *list){
     if(list->length == 0){
         free(list); 
         return;
     }
 
-    sll_float_node *collection[list->length]; 
+    sll_double_node *collection[list->length]; 
 
-    sll_float_node *cur = list->head; 
-    sll_float_node *hold; 
+    sll_double_node *cur = list->head; 
+    sll_double_node *hold; 
     while(cur != NULL){
         hold = cur->next; 
         free(cur); 
@@ -105,10 +105,10 @@ void destroy_sll_float(sll_float *list){
     free(list); 
 }
 
-unsigned long sll_float_unshift(sll_float *list, float item){
-    sll_float_node *new_node = malloc(sizeof(sll_float_node));
+unsigned long sll_double_unshift(sll_double *list, double item){
+    sll_double_node *new_node = malloc(sizeof(sll_double_node));
     new_node->value = item;    
-    sll_float_node *prev_head = list->head; 
+    sll_double_node *prev_head = list->head; 
     list->head = new_node; 
     new_node->next = prev_head; 
 
@@ -117,23 +117,23 @@ unsigned long sll_float_unshift(sll_float *list, float item){
 }
 
 
-void sll_float_insert(sll_float *list, unsigned long index, float item){
+void sll_double_insert(sll_double *list, unsigned long index, double item){
     if(index > list->length){
         return; 
     }
     else if(index == list->length){
-        sll_float_push(list, item);
+        sll_double_push(list, item);
         return;
     }
     else if(index == 0){
-        sll_float_unshift(list, item); 
+        sll_double_unshift(list, item); 
         return;
     }
 
-    sll_float_node *new_node = malloc(sizeof(sll_float_node)); 
+    sll_double_node *new_node = malloc(sizeof(sll_double_node)); 
     new_node->value = item;
 
-    sll_float_node *node_before = list->head; 
+    sll_double_node *node_before = list->head; 
     for(int i = 1; i < index; i++){
         node_before = node_before->next;
     }
@@ -144,7 +144,7 @@ void sll_float_insert(sll_float *list, unsigned long index, float item){
     list->length += 1; 
 }
 
-void sll_float_shift(sll_float *list){
+void sll_double_shift(sll_double *list){
     if(list->length == 0) {
         return; 
     }
@@ -155,7 +155,7 @@ void sll_float_shift(sll_float *list){
         list->tail = NULL;
     }
     else{
-        sll_float_node *original_head = list->head; 
+        sll_double_node *original_head = list->head; 
         list->head = list->head->next;         
 
         free(original_head);
@@ -165,25 +165,25 @@ void sll_float_shift(sll_float *list){
 }
 
 
-void sll_float_delete(sll_float *list, unsigned long index){
+void sll_double_delete(sll_double *list, unsigned long index){
     if(index == list->length - 1){
-        sll_float_pop(list);
+        sll_double_pop(list);
     }
     else if(index >= list->length){
         return; 
     }
     else if(index == 0){
-        sll_float_shift(list); 
+        sll_double_shift(list); 
     }
 
-    sll_float_node *node_before = list->head; 
+    sll_double_node *node_before = list->head; 
     unsigned long i = 0; 
     while(i != index - 1){
         node_before = node_before->next; 
         i++;
     }
     
-    sll_float_node *target_node = node_before->next; 
+    sll_double_node *target_node = node_before->next; 
     node_before->next = target_node->next; 
     free(target_node);
     
@@ -191,12 +191,12 @@ void sll_float_delete(sll_float *list, unsigned long index){
 }
 
 
-void sll_float_for_each(sll_float *list, void (*f)(float value, unsigned long index)){
+void sll_double_for_each(sll_double *list, void (*f)(double value, unsigned long index)){
     if(list->head == NULL){
         return;
     }
 
-    sll_float_node *cur = list->head; 
+    sll_double_node *cur = list->head; 
     unsigned long index = 0; 
     while(cur != NULL){
         f(cur->value, index); 
@@ -207,12 +207,12 @@ void sll_float_for_each(sll_float *list, void (*f)(float value, unsigned long in
 
 
 
-void *sll_float_reduce(sll_float *list, void * (*f)(float value, void *accumulator, unsigned long index),  void *accumulator){
+void *sll_double_reduce(sll_double *list, void * (*f)(double value, void *accumulator, unsigned long index),  void *accumulator){
     if(list->length == 0){
         return accumulator;
     }
 
-    sll_float_node *cur = list->head; 
+    sll_double_node *cur = list->head; 
     unsigned long index = 0; 
     while(cur != NULL){
         accumulator = f(cur->value, accumulator, index); 
@@ -224,18 +224,18 @@ void *sll_float_reduce(sll_float *list, void * (*f)(float value, void *accumulat
 }
 
 
-sll_float *sll_float_map(sll_float *list, float (*callback)(float current, unsigned long index)){
+sll_double *sll_double_map(sll_double *list, double (*callback)(double current, unsigned long index)){
     if(list->length == 0) {
         return NULL;
     }
     
-    sll_float *new_list = create_sll_float();
+    sll_double *new_list = create_sll_double();
 
-    sll_float_node *cur = list->head; 
+    sll_double_node *cur = list->head; 
     unsigned long index = 0;
 
     while(cur != NULL){
-        sll_float_push(new_list, callback(cur->value, index));
+        sll_double_push(new_list, callback(cur->value, index));
         cur = cur->next;
         index++;
     }
@@ -243,11 +243,11 @@ sll_float *sll_float_map(sll_float *list, float (*callback)(float current, unsig
     return new_list;
 }
 
-unsigned long sll_float_find(sll_float *list, float target){
+unsigned long sll_double_find(sll_double *list, double target){
     if(list->length == 0){
         return 0; 
     }
-    sll_float_node *cur = list->head; 
+    sll_double_node *cur = list->head; 
     
 
     unsigned long index = -1;
