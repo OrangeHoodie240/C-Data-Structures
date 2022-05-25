@@ -2,6 +2,7 @@
 #include "sll_float/sll_float.tests.h"
 #include "sll_double/sll_double.tests.h"
 #include "sll_char/sll_char.tests.h"
+#include "sll_uchar/sll_uchar.tests.h"
 #include <stdio.h>
 
 
@@ -83,6 +84,21 @@ int main(){
     run_test(sll_char_test_sll_char_map, "sll_char_test_sll_char_map", &tracker); 
     run_test(sll_char_test_sll_char_reduce, "sll_char_test_sll_char_reduce", &tracker); 
     run_test(sll_char_test_sll_char_find, "sll_char_test_sll_char_find", &tracker); 
+
+    //sll_uchar tests
+    printf("\nStarting sll_uchar tests\n");
+    run_test(sll_uchar_push_appends_node, "sll_uchar_push_appends_node", &tracker); 
+    run_test(sll_uchar_pop_returns_and_removes_node, "sll_uchar_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_get, "sll_uchar_test_sll_uchar_get", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_unshift, "sll_uchar_test_sll_uchar_unshift", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_shift, "sll_uchar_test_sll_uchar_shift", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_insert, "sll_uchar_test_sll_uchar_insert", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_delete, "sll_uchar_test_sll_uchar_delete", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_for_each, "sll_uchar_test_sll_uchar_for_each", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_map, "sll_uchar_test_sll_uchar_map", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_reduce, "sll_uchar_test_sll_uchar_reduce", &tracker); 
+    run_test(sll_uchar_test_sll_uchar_find, "sll_uchar_test_sll_uchar_find", &tracker); 
+
 
     printf("\nTests Passed: %d\nTests Failed: %d\nTotal Tests: %d", tracker.passed, tracker.failed, tracker.passed + tracker.failed);
     return 0; 
