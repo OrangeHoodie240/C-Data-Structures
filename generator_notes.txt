@@ -1,0 +1,1 @@
+Want to change from making a deep copy of the type to just placing the struct at that position. 

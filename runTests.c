@@ -5,6 +5,15 @@
 #include "sll_uchar/sll_uchar.tests.h"
 #include "sll_short/sll_short.tests.h"
 #include "sll_ushort/sll_ushort.tests.h"
+#include "sll_int/sll_int.tests.h"
+#include "sll_long/sll_long.tests.h"
+#include "sll_llong/sll_llong.tests.h"
+#include "sll_uint/sll_uint.tests.h"
+#include "sll_ulong/sll_ulong.tests.h"
+#include "sll_ullong/sll_ullong.tests.h"
+
+
+
 #include <stdio.h>
 
 
@@ -129,6 +138,96 @@ int main(){
     run_test(sll_ushort_test_sll_ushort_map, "sll_ushort_test_sll_ushort_map", &tracker); 
     run_test(sll_ushort_test_sll_ushort_reduce, "sll_ushort_test_sll_ushort_reduce", &tracker); 
     run_test(sll_ushort_test_sll_ushort_find, "sll_ushort_test_sll_ushort_find", &tracker); 
+
+
+    // sll_int tests
+    printf("\nStarting sll_int tests\n");
+    run_test(sll_int_push_appends_node, "sll_int_push_appends_node", &tracker); 
+    run_test(sll_int_pop_returns_and_removes_node, "sll_int_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_int_test_sll_int_get, "sll_int_test_sll_int_get", &tracker); 
+    run_test(sll_int_test_sll_int_unshift, "sll_int_test_sll_int_unshift", &tracker); 
+    run_test(sll_int_test_sll_int_shift, "sll_int_test_sll_int_shift", &tracker); 
+    run_test(sll_int_test_sll_int_insert, "sll_int_test_sll_int_insert", &tracker); 
+    run_test(sll_int_test_sll_int_delete, "sll_int_test_sll_int_delete", &tracker); 
+    run_test(sll_int_test_sll_int_for_each, "sll_int_test_sll_int_for_each", &tracker); 
+    run_test(sll_int_test_sll_int_map, "sll_int_test_sll_int_map", &tracker); 
+    run_test(sll_int_test_sll_int_reduce, "sll_int_test_sll_int_reduce", &tracker); 
+    run_test(sll_int_test_sll_int_find, "sll_int_test_sll_int_find", &tracker); 
+
+
+    // sll_long tests
+    printf("\nStarting sll_long tests\n");
+    run_test(sll_long_push_appends_node, "sll_long_push_appends_node", &tracker); 
+    run_test(sll_long_pop_returns_and_removes_node, "sll_long_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_long_test_sll_long_get, "sll_long_test_sll_long_get", &tracker); 
+    run_test(sll_long_test_sll_long_unshift, "sll_long_test_sll_long_unshift", &tracker); 
+    run_test(sll_long_test_sll_long_shift, "sll_long_test_sll_long_shift", &tracker); 
+    run_test(sll_long_test_sll_long_insert, "sll_long_test_sll_long_insert", &tracker); 
+    run_test(sll_long_test_sll_long_delete, "sll_long_test_sll_long_delete", &tracker); 
+    run_test(sll_long_test_sll_long_for_each, "sll_long_test_sll_long_for_each", &tracker); 
+    run_test(sll_long_test_sll_long_map, "sll_long_test_sll_long_map", &tracker); 
+    run_test(sll_long_test_sll_long_reduce, "sll_long_test_sll_long_reduce", &tracker); 
+    run_test(sll_long_test_sll_long_find, "sll_long_test_sll_long_find", &tracker); 
+
+
+
+    // sll_llong tests
+    printf("\nStarting sll_llong tests\n");
+    run_test(sll_llong_push_appends_node, "sll_llong_push_appends_node", &tracker); 
+    run_test(sll_llong_pop_returns_and_removes_node, "sll_llong_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_llong_test_sll_llong_get, "sll_llong_test_sll_llong_get", &tracker); 
+    run_test(sll_llong_test_sll_llong_unshift, "sll_llong_test_sll_llong_unshift", &tracker); 
+    run_test(sll_llong_test_sll_llong_shift, "sll_llong_test_sll_llong_shift", &tracker); 
+    run_test(sll_llong_test_sll_llong_insert, "sll_llong_test_sll_llong_insert", &tracker); 
+    run_test(sll_llong_test_sll_llong_delete, "sll_llong_test_sll_llong_delete", &tracker); 
+    run_test(sll_llong_test_sll_llong_for_each, "sll_llong_test_sll_llong_for_each", &tracker); 
+    run_test(sll_llong_test_sll_llong_map, "sll_llong_test_sll_llong_map", &tracker); 
+    run_test(sll_llong_test_sll_llong_reduce, "sll_llong_test_sll_llong_reduce", &tracker); 
+    run_test(sll_llong_test_sll_llong_find, "sll_llong_test_sll_llong_find", &tracker); 
+
+
+    // sll_uint tests
+    printf("\nStarting sll_uint tests\n");
+    run_test(sll_uint_push_appends_node, "sll_uint_push_appends_node", &tracker); 
+    run_test(sll_uint_pop_returns_and_removes_node, "sll_uint_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_uint_test_sll_uint_get, "sll_uint_test_sll_uint_get", &tracker); 
+    run_test(sll_uint_test_sll_uint_unshift, "sll_uint_test_sll_uint_unshift", &tracker); 
+    run_test(sll_uint_test_sll_uint_shift, "sll_uint_test_sll_uint_shift", &tracker); 
+    run_test(sll_uint_test_sll_uint_insert, "sll_uint_test_sll_uint_insert", &tracker); 
+    run_test(sll_uint_test_sll_uint_delete, "sll_uint_test_sll_uint_delete", &tracker); 
+    run_test(sll_uint_test_sll_uint_for_each, "sll_uint_test_sll_uint_for_each", &tracker); 
+    run_test(sll_uint_test_sll_uint_map, "sll_uint_test_sll_uint_map", &tracker); 
+    run_test(sll_uint_test_sll_uint_reduce, "sll_uint_test_sll_uint_reduce", &tracker); 
+    run_test(sll_uint_test_sll_uint_find, "sll_uint_test_sll_uint_find", &tracker); 
+
+    // sll_ulong tests
+    printf("\nStarting sll_ulong tests\n");
+    run_test(sll_ulong_push_appends_node, "sll_ulong_push_appends_node", &tracker); 
+    run_test(sll_ulong_pop_returns_and_removes_node, "sll_ulong_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_get, "sll_ulong_test_sll_ulong_get", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_unshift, "sll_ulong_test_sll_ulong_unshift", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_shift, "sll_ulong_test_sll_ulong_shift", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_insert, "sll_ulong_test_sll_ulong_insert", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_delete, "sll_ulong_test_sll_ulong_delete", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_for_each, "sll_ulong_test_sll_ulong_for_each", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_map, "sll_ulong_test_sll_ulong_map", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_reduce, "sll_ulong_test_sll_ulong_reduce", &tracker); 
+    run_test(sll_ulong_test_sll_ulong_find, "sll_ulong_test_sll_ulong_find", &tracker); 
+
+    // sll_ullong tests
+    printf("\nStarting sll_ullong tests\n");
+    run_test(sll_ullong_push_appends_node, "sll_ullong_push_appends_node", &tracker); 
+    run_test(sll_ullong_pop_returns_and_removes_node, "sll_ullong_pop_returns_and_removes_node", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_get, "sll_ullong_test_sll_ullong_get", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_unshift, "sll_ullong_test_sll_ullong_unshift", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_shift, "sll_ullong_test_sll_ullong_shift", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_insert, "sll_ullong_test_sll_ullong_insert", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_delete, "sll_ullong_test_sll_ullong_delete", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_for_each, "sll_ullong_test_sll_ullong_for_each", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_map, "sll_ullong_test_sll_ullong_map", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_reduce, "sll_ullong_test_sll_ullong_reduce", &tracker); 
+    run_test(sll_ullong_test_sll_ullong_find, "sll_ullong_test_sll_ullong_find", &tracker); 
+
 
     printf("\nTests Passed: %d\nTests Failed: %d\nTotal Tests: %d", tracker.passed, tracker.failed, tracker.passed + tracker.failed);
     return 0; 

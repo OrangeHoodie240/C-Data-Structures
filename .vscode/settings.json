@@ -3,6 +3,8 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "type_traits": "c",
-        "sll_char.tests.h": "c"
+        "sll_char.tests.h": "c",
+        "sll_int.tests.h": "c",
+        "sll_long.tests.h": "c"
     }
 }
