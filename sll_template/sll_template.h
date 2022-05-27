@@ -1,5 +1,5 @@
 
-#include "car/car.h"
+#include "car.h"
 #ifndef sll_car_defined 
 #define sll_car_defined 
 
@@ -14,7 +14,6 @@ typedef struct sll_car {
     sll_car_node *head; 
     sll_car_node *tail; 
     unsigned long length; 
-    void (*add_function)(sll_car_node *node, car value); 
     void (*delete_function)(sll_car_node *node); 
 } sll_car; 
 
@@ -66,7 +65,7 @@ typedef struct sll_car {
 //    free(((car *)(node->value))->color);
 //    free(node->value);
 //}
-sll_car *create_sll_car(void (*f)(sll_car_node *node, car value), void (*g)(sll_car_node * node));
+sll_car *create_sll_car();
 
 
 // Takes the sll_car and then the address to the value to append to the sll_car
@@ -80,7 +79,7 @@ unsigned long sll_car_push(sll_car *list, car item);
 // If we use any value other than 0, the value is returned a void *. 
 car *sll_car_pop(sll_car *list, char return_item);
 
-car sll_car_get(sll_car *list, unsigned long index);
+car *sll_car_get(sll_car *list, unsigned long index);
 void destroy_sll_car(sll_car *list);
 unsigned long sll_car_unshift(sll_car *list, car item); 
 void sll_car_insert(sll_car *list, unsigned long index, car item);
@@ -94,14 +93,14 @@ void sll_car_delete(sll_car *list, unsigned long index);
 // Takes list and then a function, void *f(void *value, unsigned long index) and finally  Then executes 
 // the function on each sll_car_node value property and passing its index.
 
-void sll_car_for_each(sll_car *list, void (*f)(void *value, unsigned long index));
+void sll_car_for_each(sll_car *list, void (*f)(car value, unsigned long index));
 
 // add function for float types
 void sll_car_add_for_float(sll_car_node *node, void *item);
 
-void *sll_car_reduce(sll_car *list, void * (*f)(void *current, void *accumulator, unsigned long index),  void *accumulator);
-sll_car *sll_car_map(sll_car *list, void *(*callback)(void *current, unsigned long index), void (*add_function)(sll_car_node *node, void *item), void (*delete_function)(sll_car_node *node));
-void *sll_car_find(sll_car *list, void *(callback)(void *value)); 
+void *sll_car_reduce(sll_car *list, void * (*f)(car current, void *accumulator, unsigned long index),  void *accumulator);
+sll_car *sll_car_map(sll_car *list, car (*callback)(car current, unsigned long index));
+car *sll_car_find(sll_car *list, car *(callback)(car value)); 
 
 
 #endif

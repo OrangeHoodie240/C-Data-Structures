@@ -2,9 +2,13 @@
 #include <stdio.h>
 #include <string.h> 
 #include "sll_template.h"
-#include "car/car.h"
+#include "car.h"
 
-sll_car *create_sll_car(void (*f)(sll_car_node *node, car value), void (*g)(sll_car_node * node)){
+static void sll_car_delete_function(car value){
+    free(value.color);
+}
+
+sll_car *create_sll_car(){
     sll_car *list = malloc(sizeof(sll_car));
     if(list == NULL){
         printf("\nError\n");
@@ -13,16 +17,13 @@ sll_car *create_sll_car(void (*f)(sll_car_node *node, car value), void (*g)(sll_
     list->head = NULL; 
     list->tail = NULL; 
     list->length = 0; 
-    list->add_function = f; 
-    list->delete_function = g; 
     return list; 
 }
 
 unsigned long sll_car_push(sll_car *list, car car){
     sll_car_node *next; 
     next = malloc(sizeof(sll_car_node)); 
-
-    list->add_function(next, item); 
+    next->value = car; 
 
     next->next = NULL; 
     if(list->head == NULL){
@@ -46,15 +47,10 @@ car *sll_car_pop(sll_car *list, char return_item){
     
     if(list->head == list->tail){
         if(return_item == 0){
-            if(list->delete_function != NULL){
-                list->delete_function(list->head);
-            }
-            else{
-                free(list->head->value);
-            }
+            sll_car_delete_function(list->head->value);
         }
         else{
-            result = list->head->value; 
+            result = &(list->head->value); 
         }
 
         free(list->head);
@@ -69,12 +65,7 @@ car *sll_car_pop(sll_car *list, char return_item){
         }
 
         if(return_item == 0){
-            if(list->delete_function != NULL){
-                list->delete_function(cur->next); 
-            }
-            else{
-                free(cur->next->value); 
-            }
+            sll_car_delete_function(cur->next->value);
         }
         else{
             result = &(cur->next->value); 
@@ -92,7 +83,7 @@ car *sll_car_pop(sll_car *list, char return_item){
 
 
 
-car sll_car_get(sll_car *list, unsigned long index){
+car *sll_car_get(sll_car *list, unsigned long index){
     if(list->length - 1 < index){
         return NULL; 
     }
@@ -104,7 +95,7 @@ car sll_car_get(sll_car *list, unsigned long index){
         cur_ind++; 
     }
 
-    return cur_node->value; 
+    return &(cur_node->value); 
 }
 
 
@@ -123,26 +114,17 @@ void destroy_sll_car(sll_car *list){
         cur = cur->next; 
     }
 
+
     for(unsigned long i = list->length - 1; i > 0; i--){
         cur = collection[i]; 
-        if(list->delete_function != NULL){
-            list->delete_function(cur);
-        }
-        else{
-            free(cur->value); 
-        }
+        sll_car_delete_function(cur->value);
         free(cur->next); 
     }
 
     cur = collection[0];
     if(cur != NULL){
         free(cur->next); 
-        if(list->delete_function != NULL){
-            list->delete_function(cur);
-        }
-        else{
-            free(cur->value); 
-        }
+        sll_car_delete_function(cur->value);
         free(cur); 
     }
 
@@ -151,8 +133,7 @@ void destroy_sll_car(sll_car *list){
 
 unsigned long sll_car_unshift(sll_car *list, car item){
     sll_car_node *new_node = malloc(sizeof(sll_car_node));
-    list->add_function(new_node, item); 
-    
+    new_node->value = item; 
     sll_car_node *prev_head = list->head; 
     list->head = new_node; 
     new_node->next = prev_head; 
@@ -176,8 +157,7 @@ void sll_car_insert(sll_car *list, unsigned long index, car item){
     }
 
     sll_car_node *new_node = malloc(sizeof(sll_car_node)); 
-    list->add_function(new_node, item);
-
+    new_node->value = item;
     sll_car_node *node_before = list->head; 
     for(int i = 1; i < index; i++){
         node_before = node_before->next;
@@ -194,12 +174,7 @@ void sll_car_shift(sll_car *list){
         return; 
     }
     
-    if(list->delete_function != NULL){
-        list->delete_function(list->head); 
-    }
-    else{
-        free(list->head->value); 
-    }
+    sll_car_delete_function(list->head->value); 
 
     if(list->length == 1){
         free(list->head);
@@ -237,20 +212,14 @@ void sll_car_delete(sll_car *list, unsigned long index){
     
     sll_car_node *target_node = node_before->next; 
     node_before->next = target_node->next; 
-        
-    if(list->delete_function != NULL){
-        list->delete_function(target_node); 
-    }
-    else{
-        free(target_node->value); 
-    }    
+    sll_car_delete_function(target_node->value); 
     free(target_node);
     
     list->length -=1; 
 }
 
 
-void sll_car_for_each(sll_car *list, void (*f)(void *value, unsigned long index)){
+void sll_car_for_each(sll_car *list, void (*f)(car value, unsigned long index)){
     if(list->head == NULL){
         return;
     }
@@ -266,7 +235,7 @@ void sll_car_for_each(sll_car *list, void (*f)(void *value, unsigned long index)
 
 
 
-void *sll_car_reduce(sll_car *list, void * (*f)(void *current, void *accumulator, unsigned long index),  void *accumulator){
+void *sll_car_reduce(sll_car *list, void * (*f)(car current, void *accumulator, unsigned long index),  void *accumulator){
     if(list->length == 0){
         return accumulator;
     }
@@ -283,12 +252,12 @@ void *sll_car_reduce(sll_car *list, void * (*f)(void *current, void *accumulator
 }
 
 
-sll_car *sll_car_map(sll_car *list, void *(*callback)(void *current, unsigned long index), void (*add_function)(sll_car_node *node, void *item), void (*delete_function)(sll_car_node *node)){
+sll_car *sll_car_map(sll_car *list, car (*callback)(car current, unsigned long index)){
     if(list->length == 0) {
         return NULL;
     }
     
-    sll_car *new_list = create_sll_car(add_function, delete_function);
+    sll_car *new_list = create_sll_car();
 
     sll_car_node *cur = list->head; 
     unsigned long index = 0;
@@ -303,23 +272,18 @@ sll_car *sll_car_map(sll_car *list, void *(*callback)(void *current, unsigned lo
 }
 
 
-// add and delete functions for the primatives
-void sll_car_add_for_float(sll_car_node *node, void *item){
-    node->value = malloc(sizeof(float *));
-    *(float *)(node->value) = *(float *)item;
-}
 
 
-// returns direct void pointer to item
+// returns direct pointer to item
 // does not return copy
-void *sll_car_find(sll_car *list, void *(callback)(void *value)){
+car *sll_car_find(sll_car *list, car *(callback)(car value)){
     if(list->length == 0){
         return NULL; 
     }
     sll_car_node *cur = list->head; 
     unsigned long index = 0;
     
-    void *item = NULL;  
+    car *item = NULL;  
     while(cur != NULL){
         item = callback(cur->value); 
         if(item != NULL){

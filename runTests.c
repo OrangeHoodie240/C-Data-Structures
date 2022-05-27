@@ -11,6 +11,7 @@
 #include "sll_uint/sll_uint.tests.h"
 #include "sll_ulong/sll_ulong.tests.h"
 #include "sll_ullong/sll_ullong.tests.h"
+#include "sll_template/sll_template.tests.h"
 
 
 
@@ -228,6 +229,11 @@ int main(){
     run_test(sll_ullong_test_sll_ullong_reduce, "sll_ullong_test_sll_ullong_reduce", &tracker); 
     run_test(sll_ullong_test_sll_ullong_find, "sll_ullong_test_sll_ullong_find", &tracker); 
 
+
+    // sll_template tests
+    printf("\nStarting sll_template tests\n");
+    run_test(sll_car_test_sll_car_push_appends_node, "sll_car_push_appends_node", &tracker); 
+    run_test(sll_car_pop_removes_node, "sll_car_pop_removes_node", &tracker); 
 
     printf("\nTests Passed: %d\nTests Failed: %d\nTotal Tests: %d", tracker.passed, tracker.failed, tracker.passed + tracker.failed);
     return 0; 
