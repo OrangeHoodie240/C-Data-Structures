@@ -234,6 +234,17 @@ int main(){
     printf("\nStarting sll_template tests\n");
     run_test(sll_car_test_sll_car_push_appends_node, "sll_car_push_appends_node", &tracker); 
     run_test(sll_car_pop_removes_node, "sll_car_pop_removes_node", &tracker); 
+    run_test(sll_car_unshift_prepends_node, "sll_car_unshift_prepends_node", &tracker); 
+    run_test(sll_car_inserts_correctly, "sll_car_inserts_correctly", &tracker); 
+    run_test(sll_car_shift_deletes_first_node, "sll_car_shift_deletes_first_node", &tracker); 
+    run_test(sll_car_delete_deletes_from_middle, "sll_car_delete_deletes_from_middle", &tracker); 
+    run_test(sll_car_for_each_test, "sll_car_for_each_test", &tracker); 
+    run_test(sll_car_test_reduce, "sll_car_test_reduce", &tracker); 
+    run_test(sll_car_test_sll_map, "sll_car_test_sll_map", &tracker); 
+    run_test(sll_car_test_find, "sll_car_test_find", &tracker); 
+
+
+
 
     printf("\nTests Passed: %d\nTests Failed: %d\nTotal Tests: %d", tracker.passed, tracker.failed, tracker.passed + tracker.failed);
     return 0; 

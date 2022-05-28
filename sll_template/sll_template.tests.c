@@ -163,10 +163,9 @@ char sll_car_pop_removes_node(){
 
     return 1; 
 }
-/*
 
-char sll_unshift_prepends_node(){
-    sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_unshift_prepends_node(){
+    sll_car *list = create_sll_car(); 
 
     
     car c1, c2, c3, c4; 
@@ -193,38 +192,42 @@ char sll_unshift_prepends_node(){
     // prepended car will be added to the array but not the sll until later
     car cars[5] = {prepended_car, c1, c2, c3, c4};
     for(int i = 1; i < 5; i++){
-        sll_push(list, &cars[i]);
+        sll_car_push(list, cars[i]);
     }
 
-    sll_unshift(list, &prepended_car);
+    sll_car_unshift(list, prepended_car);
 
     // assert length is 5
     if(list->length != 5){
-        free_everything(list, cars, 5);
+        free_cars(cars, 5); 
+        free(list);
         return 0;
     }
 
     // assert they all have the correct values
     for(int i = 0; i < 5; i++){
-        car *retrieved = sll_get(list, i);
+        car *retrieved = sll_car_get(list, i);
         if(retrieved->weight != cars[i].weight){
-            free_everything(list, cars, 5);
+            free_cars(cars, 5);
+            free(list);
             return 0;
         }
         if(strcmp(retrieved->color, cars[i].color) != 0){
-            free_everything(list, cars, 5);
+            free_cars(cars, 5);
+            free(list);
             return 0;
         }
     }
 
-    free_everything(list, cars, 5);
+    free_cars(cars, 5);
+    free(list);
     return 1;
 }
 
-char sll_inserts_correctly(){
-    sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_inserts_correctly(){
+    sll_car *list = create_sll_car(); 
  
-   car c1, c2, c3, c4; 
+    car c1, c2, c3, c4; 
     c1.weight = 1.2; 
     c2.weight = 2.3; 
     c3.weight = 3.4;
@@ -251,39 +254,42 @@ char sll_inserts_correctly(){
         if(i == 2){
             continue;
         }
-        sll_push(list, &cars[i]);
+        sll_car_push(list, cars[i]);
     }
 
-    sll_insert(list, 2, &inserted_car);
+    sll_car_insert(list, 2, inserted_car);
 
     // assert length is correct
     if(list->length != 5){
-        free_everything(list, cars, 5);
+        free_cars(cars, 5);
+        free(list);
         return 0;
     }
 
     // assert all the values are correct
     for(int i = 0; i < 5; i++){
-        car *retrieved = sll_get(list, i); 
+        car *retrieved = sll_car_get(list, i); 
         if(retrieved->weight != cars[i].weight){
-            free_everything(list, cars, 5);
+            free_cars(cars, 5);
+            free(list);
             return 0; 
         }
 
         if(strcmp(retrieved->color, cars[i].color) != 0){
-            free_everything(list, cars, 5);
+            free_cars(cars, 5);
+            free(list);
             return 0;
         }
     }
 
-
-    free_everything(list, cars, 5);
+    free_cars(cars, 5);
+    free(list);
     return 1; 
 }
 
+char sll_car_shift_deletes_first_node(){
 
-char sll_shift_deletes_first_node(){
-    sll *list = create_sll(add_for_car, delete_for_car);
+    sll_car *list = create_sll_car();
 
     car c1, c2, c3, c4; 
     c1.weight = 1.2; 
@@ -300,39 +306,42 @@ char sll_shift_deletes_first_node(){
     c4.color = malloc(sizeof(char) * 5);
     strcpy(c4.color, "gray");
 
-    sll_push(list, &c1);
-    sll_push(list, &c2);
-    sll_push(list, &c3);
-    sll_push(list, &c4);
+    sll_car_push(list, c1);
+    sll_car_push(list, c2);
+    sll_car_push(list, c3);
+    sll_car_push(list, c4);
 
     car cars[4] = {c1, c2, c3, c4};
 
     // assert removes first node and second node is new head
-    sll_shift(list);
-    car *head_car = list->head->value; 
-    if(head_car->weight != c2.weight || strcmp(head_car->color, c2.color) != 0 || list->length != 3){
-        free_everything(list, cars, 4);
+    sll_car_shift(list);
+    car head_car = list->head->value; 
+    if(head_car.weight != c2.weight || strcmp(head_car.color, c2.color) != 0 || list->length != 3){
+        free_cars(cars, 4);
+        free(list);
         return 0; 
     }
 
     // assert it will empty it to length 0
-    sll_shift(list);
-    sll_shift(list);
-    sll_shift(list);
+    sll_car_shift(list);
+    sll_car_shift(list);
+    sll_car_shift(list);
 
     if(list->length != 0){
-        free_everything(list, cars, 4);
+        free_cars(cars, 4);
+        free(list);
         return 0;
     }
 
-    free_everything(list, cars, 4);
+    free(list);
+
     return 1; 
 
 }
 
 
-char sll_delete_deletes_from_middle(){
-     sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_delete_deletes_from_middle(){
+    sll_car *list = create_sll_car(); 
  
     car c1, c2, c3, c4; 
     c1.weight = 1.2; 
@@ -350,34 +359,33 @@ char sll_delete_deletes_from_middle(){
     c4.color = malloc(sizeof(char) * 5);
     strcpy(c4.color, "gray");   
 
-    sll_push(list, &c1);
-    sll_push(list, &c2);
-    sll_push(list, &c3);
-    sll_push(list, &c4);
+    sll_car_push(list, c1);
+    sll_car_push(list, c2);
+    sll_car_push(list, c3);
+    sll_car_push(list, c4);
 
-    sll_delete(list, 2); 
-    car *car_at_2 = sll_get(list, 2); 
+    sll_car_delete(list, 2); 
+    car *car_at_2 = sll_car_get(list, 2); 
     char result = 1;
     // assert correct length and the new node at 2 is as anticipated
     if(list->length != 3 || car_at_2->weight != c4.weight || strcmp(car_at_2->color, c4.color) != 0){
         result = 0; 
     }
-
     free(c1.color);
     free(c2.color);
-    free(c3.color);
     free(c4.color);
-    destroy_sll(list);
+    free(list);
     return result; 
 }
 
-void test_for_each_callback(void *value, unsigned long index){
-    ((car*)value)->weight = 100.000; 
-    strcpy(((car*)value)->color, "white"); 
+static void test_for_each_callback(car *value, unsigned long index){
+    value->weight = 100.000; 
+    strcpy(value->color, "white"); 
 }
 
-char sll_for_each_test(){
-    sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_for_each_test(){
+
+    sll_car *list = create_sll_car(); 
  
     car c1, c2, c3, c4; 
     c1.weight = 1.2; 
@@ -395,41 +403,42 @@ char sll_for_each_test(){
     c4.color = malloc(sizeof(char) * 5);
     strcpy(c4.color, "gray");   
 
-    sll_push(list, &c1);
-    sll_push(list, &c2);
-    sll_push(list, &c3);
-    sll_push(list, &c4);
+    sll_car_push(list, c1);
+    sll_car_push(list, c2);
+    sll_car_push(list, c3);
+    sll_car_push(list, c4);
 
 
     car cars[4] = {c1, c2, c3, c4};
 
 
     // change nodes with sll_for_each
-    sll_for_each(list, test_for_each_callback);
+    sll_car_for_each(list, test_for_each_callback);
 
     for(int i = 0; i < 4; i++){
-        car * c = sll_get(list, i);
+        car *c = sll_car_get(list, i);
         if(c->weight != 100.000 || strcmp(c->color, "white") != 0){
-            free_everything(list, cars, 4);
+            free_cars(cars, 4);
+            free(list);
             return 0; 
         }
     }
 
-
-    free_everything(list, cars, 4);
+    free_cars(cars, 4);
+    free(list);
     return 1;
 }
 
 
 
 
-void *sll_test_reduce_helper(void *current, void *accumulator, unsigned long index){
-    *(float *)accumulator += (*(car *)current).weight;
+static void *sll_test_reduce_helper(car current, void *accumulator, unsigned long index){
+    *(float *)accumulator += current.weight;
     return accumulator;
 }
 
-char sll_test_reduce(){
-    sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_test_reduce(){
+    sll_car *list = create_sll_car(); 
  
     car c1, c2, c3, c4; 
     c1.weight = 12; 
@@ -448,33 +457,35 @@ char sll_test_reduce(){
     strcpy(c4.color, "gray");   
     car cars[4] = {c1, c2, c3, c4};
 
-    sll_push(list, &c1);
-    sll_push(list, &c2);
-    sll_push(list, &c3);
-    sll_push(list, &c4);
+    sll_car_push(list, c1);
+    sll_car_push(list, c2);
+    sll_car_push(list, c3);
+    sll_car_push(list, c4);
 
     float sum = 0.0; 
-    sum = *(float *)sll_reduce(list, sll_test_reduce_helper, &sum);
+    sum = *(float *)sll_car_reduce(list, sll_test_reduce_helper, &sum);
     
     char result = 1; 
     if(sum != 110.000){
         result = 0;
     }
 
-    free_everything(list, cars, 4);
+    free_cars(cars, 4);
+    free(list);
     return result;
 }
 
     
 
-void *sll_test_sll_map_helper_callback(void *current, unsigned long index){
-    void *weight = malloc(sizeof(float *));
-    *(float *)weight = (*(car *)current).weight;
-    return weight;
+static car sll_test_sll_map_helper_callback(car current, unsigned long index){
+    car c; 
+    strcpy(c.color, current.color); 
+    c.weight = current.weight * 2; 
+    return c;
 }
 
-char sll_test_sll_map(){
-    sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_test_sll_map(){
+    sll_car *list = create_sll_car(); 
  
     car c1, c2, c3, c4; 
     c1.weight = 12; 
@@ -493,44 +504,46 @@ char sll_test_sll_map(){
     strcpy(c4.color, "gray");   
     car cars[4] = {c1, c2, c3, c4};
 
-    sll_push(list, &c1);
-    sll_push(list, &c2);
-    sll_push(list, &c3);
-    sll_push(list, &c4);
+    sll_car_push(list, c1);
+    sll_car_push(list, c2);
+    sll_car_push(list, c3);
+    sll_car_push(list, c4);
 
-    sll *new_list = sll_map(list, sll_test_sll_map_helper_callback, sll_add_for_float, NULL); 
+    sll_car *new_list = sll_car_map(list, sll_test_sll_map_helper_callback); 
 
     float sum = 0; 
+    car *cptr; 
     for(int i = 0; i < 4; i++){
-        float *weight = sll_get(new_list, i); 
-        sum += *weight;
+        cptr = sll_car_get(new_list, i); 
+        sum += cptr->weight;
     }
 
     char result = 1;
-    if(sum != 110.000){
+    if(sum != 220.000){
         result = 0; 
     }
 
-    free_everything(list, cars, 4);
-    destroy_sll(new_list);
+    free_cars(cars, 4);
+    free(list);
+    free(new_list);
     return result;
 
 }
 
-void *sll_test_find_helper(void *value){
-    car c = *(car *)value; 
-    if(c.weight != 34){
+
+static car *sll_test_find_helper(car *c){
+    if(c->weight != 34){
         return NULL; 
     }
-    if(strcmp(c.color, "green") != 0){
+    if(strcmp(c->color, "green") != 0){
         return NULL; 
     }
-    return value; 
+    return c; 
 }
 
 
-char sll_test_find(){
-    sll *list = create_sll(add_for_car, delete_for_car); 
+char sll_car_test_find(){
+    sll_car *list = create_sll_car(); 
  
     car c1, c2, c3, c4; 
     c1.weight = 12; 
@@ -549,13 +562,13 @@ char sll_test_find(){
     strcpy(c4.color, "gray");   
     car cars[4] = {c1, c2, c3, c4};
 
-    sll_push(list, &c1);
-    sll_push(list, &c2);
-    sll_push(list, &c3);
-    sll_push(list, &c4);
+    sll_car_push(list, c1);
+    sll_car_push(list, c2);
+    sll_car_push(list, c3);
+    sll_car_push(list, c4);
 
     char result = 1; 
-    car *found = (car *)sll_find(list, sll_test_find_helper); 
+    car *found = (car *)sll_car_find(list, sll_test_find_helper); 
     if(found == NULL){
         result = 0; 
     }
@@ -565,8 +578,8 @@ char sll_test_find(){
     else if(strcmp(found->color, cars[2].color) != 0){
         result = 0; 
     }
+    free_cars(cars, 4);
+    free(list);
 
-    free_everything(list, cars, 4);
     return result; 
 }
-*/

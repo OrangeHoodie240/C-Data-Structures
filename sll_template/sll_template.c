@@ -219,7 +219,7 @@ void sll_car_delete(sll_car *list, unsigned long index){
 }
 
 
-void sll_car_for_each(sll_car *list, void (*f)(car value, unsigned long index)){
+void sll_car_for_each(sll_car *list, void (*f)(car *value, unsigned long index)){
     if(list->head == NULL){
         return;
     }
@@ -227,7 +227,7 @@ void sll_car_for_each(sll_car *list, void (*f)(car value, unsigned long index)){
     sll_car_node *cur = list->head; 
     unsigned long index = 0; 
     while(cur != NULL){
-        f(cur->value, index); 
+        f(&(cur->value), index); 
         cur = cur->next;
         index++; 
     }
@@ -276,7 +276,7 @@ sll_car *sll_car_map(sll_car *list, car (*callback)(car current, unsigned long i
 
 // returns direct pointer to item
 // does not return copy
-car *sll_car_find(sll_car *list, car *(callback)(car value)){
+car *sll_car_find(sll_car *list, car *(callback)(car *value)){
     if(list->length == 0){
         return NULL; 
     }
@@ -285,7 +285,7 @@ car *sll_car_find(sll_car *list, car *(callback)(car value)){
     
     car *item = NULL;  
     while(cur != NULL){
-        item = callback(cur->value); 
+        item = callback(&(cur->value)); 
         if(item != NULL){
             break;
         }
