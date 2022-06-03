@@ -8,7 +8,7 @@ char *swap_type(char *line, char *type_name, char num_of_char){
     if(start == NULL){
         return start;
     }
-// here
+
     char *new_line = malloc(sizeof(char) * 300);
     new_line[0] = '\0';
 
@@ -49,56 +49,51 @@ char *swap_type(char *line, char *type_name, char num_of_char){
     return new_line;
 }
 
-
-
-int main(){
-
-    char *filename = malloc(sizeof(char) * 100);
-    filename[0] = '\0';
-    strcpy(filename, "temp.c");
-
-
-    char *type_name = malloc(sizeof(char) * 4); 
-    strcpy(type_name,"example");
-    char num_of_char = strlen(type_name) + 1; 
-
-    FILE *input = fopen("sll_example/sll_example.c", "r");
-    FILE *output = fopen("temp.c", "w");
+void copy_file(char *new_filename, char *template_filename, char *type_name, char *path){
+    char num_of_char = strlen(type_name) + 1;
+    char temp_filename[50] =  "temporary39292.c"; 
+    FILE *tmp = tmpfile(); 
+    tmp = fopen(temp_filename, "w");
+    FILE *input = fopen(template_filename, "r"); 
 
     int next = fgetc(input);
     while(next != EOF){
-        fputc(next, output);
+        fputc(next, tmp);
         next = fgetc(input);
     }
 
     fclose(input);
-
-
-    fputc(10, output);
-
-    // build sll_type.h
-    input = fopen("sll_template/sll_template.c", "r"); 
-
-    next = fgetc(input);
-    while(next != EOF){
-        fputc(next, output);
-        next = fgetc(input);
-    }
-
-    fclose(input);
-    fclose(output);
+    fclose(tmp);
 
 
 
-    input = fopen("temp.c", "r");
+    tmp = fopen(temp_filename, "r");
 
-    output = fopen("temp2.c", "w");
+    FILE *output = fopen(new_filename, "w");
+    char include_header[strlen(type_name) + 12];
+ 
+ /* 
+    REMOVE PATH FROM INCLUDE HEADER
+
+    ADD PATH TO THE NEW FILES 
+
+
+
+
+
+
+*/ 
+ 
+    strcpy(include_header, "#include\"");
+    strcat(include_header, type_name);
+    strcat(include_header, ".h\"\n");
+    fprintf(output, include_header);
+
+
     char *line = malloc(sizeof(char) * 300); 
     char *new_line;
 
-    //int is_eof = fscanf(input, "%[^\n]", line); 
-    // while(is_eof != EOF){
-    while(fgets(line, 299, input) != NULL){
+    while(fgets(line, 299, tmp) != NULL){
         new_line=swap_type(line, type_name, num_of_char);
         while(new_line != NULL){
             strcpy(line, new_line);
@@ -106,10 +101,56 @@ int main(){
             new_line = swap_type(line, type_name, num_of_char);
 
         }
-        // strcat(line, "\n");
         fprintf(output, line);
-        // is_eof = fscanf(input, "%[^\n]", line); 
     }
-    fclose(input);
+    fclose(tmp);
     fclose(output);
+
+    remove(temp_filename);
+}
+
+// $ ./output.exe sll_example/sll_example
+int main(int argc,  char *argv[]){
+    char *path_to_header = argv[1];
+    char *path = malloc(sizeof(char) * strlen(path_to_header));
+
+    char *type_name = malloc(sizeof(char) * strlen(path_to_header));
+    char *sub = strstr(path_to_header, "/");
+    if(sub == NULL){
+        strcpy(type_name, sub);
+        path[0] = '\0';
+    }
+    else{
+        char temp_length = (strlen(path_to_header) + 1) - strlen(sub); 
+        strncpy(path, path_to_header, temp_length);
+        path[temp_length + 1] = '\0';
+    }
+    while(sub != NULL){
+        sub++; 
+        strcpy(type_name, sub);
+        sub = strstr(sub, "/");
+    }
+    strncpy(type_name, type_name, strlen(type_name) - 2);
+    type_name[strlen(type_name) - 2] = '\0';
+
+
+    char *new_filename = malloc(sizeof(char) * 300);
+    strcpy(new_filename, path);
+    strcat(new_filename, "sll_"); 
+    strcat(new_filename, type_name); 
+
+
+
+// 
+
+    char *template_filename = "sll_template/sll_template_clone.c";
+    strcat(new_filename, ".c");
+    printf("\n %s \n", new_filename);
+    copy_file(new_filename, template_filename, type_name, path);
+    
+    new_filename[strlen(new_filename) - 1] = 'h';
+    template_filename = "sll_template/sll_template_clone.h";
+    copy_file(new_filename, template_filename, type_name, path);
+    printf("\n %s \n", new_filename);
+
 }

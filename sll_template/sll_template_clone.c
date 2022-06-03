@@ -1,17 +1,8 @@
-#include "example.h"
-
-void delete_function(example ex){
-    free(example.string);
-}
 #include <stdlib.h> 
 #include <stdio.h>
 #include <string.h> 
-#include "sll_template.h"
-#include "car.h"
+#include "sll_car.h"
 
-static void sll_car_delete_function(car value){
-    free(value.color);
-}
 
 sll_car *create_sll_car(){
     sll_car *list = malloc(sizeof(sll_car));
@@ -52,7 +43,7 @@ car *sll_car_pop(sll_car *list, char return_item){
     
     if(list->head == list->tail){
         if(return_item == 0){
-            sll_car_delete_function(list->head->value);
+            delete_function(list->head->value);
         }
         else{
             result = &(list->head->value); 
@@ -70,7 +61,7 @@ car *sll_car_pop(sll_car *list, char return_item){
         }
 
         if(return_item == 0){
-            sll_car_delete_function(cur->next->value);
+            delete_function(cur->next->value);
         }
         else{
             result = &(cur->next->value); 
@@ -122,14 +113,14 @@ void destroy_sll_car(sll_car *list){
 
     for(unsigned long i = list->length - 1; i > 0; i--){
         cur = collection[i]; 
-        sll_car_delete_function(cur->value);
+        delete_function(cur->value);
         free(cur->next); 
     }
 
     cur = collection[0];
     if(cur != NULL){
         free(cur->next); 
-        sll_car_delete_function(cur->value);
+        delete_function(cur->value);
         free(cur); 
     }
 
@@ -179,7 +170,7 @@ void sll_car_shift(sll_car *list){
         return; 
     }
     
-    sll_car_delete_function(list->head->value); 
+    delete_function(list->head->value); 
 
     if(list->length == 1){
         free(list->head);
@@ -217,7 +208,7 @@ void sll_car_delete(sll_car *list, unsigned long index){
     
     sll_car_node *target_node = node_before->next; 
     node_before->next = target_node->next; 
-    sll_car_delete_function(target_node->value); 
+    delete_function(target_node->value); 
     free(target_node);
     
     list->length -=1; 
