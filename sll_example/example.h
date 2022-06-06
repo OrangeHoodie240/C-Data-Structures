@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-void delete_function(example ex){
+void __delete_function__(example ex){
     free(example.string);
 }
 
